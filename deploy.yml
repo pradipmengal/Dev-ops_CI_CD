@@ -1,0 +1,36 @@
+---
+- name: Deploy Docker Image
+  hosts: node1
+  tasks:
+    - name: Ensure Docker is installed
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+      become: yes
+
+    - name: Prune Docker system
+      command: docker system prune -a --force
+      become: yes
+
+    - name: Pull Docker image from Docker Hub
+      docker_image:
+        name: nagraj0477/my_ci_pipeline
+        tag: latest
+        source: pull
+        force_source: yes
+        force_tag: yes
+
+    - name: Stop and remove existing container if running
+      docker_container:
+        name: my_app_container
+        state: absent
+
+    - name: Run Docker container with the latest image
+      docker_container:
+        name: my_app_container
+        image: nagraj0477/my_ci_pipeline:latest
+        state: started
+        ports:
+          - "80:80"
+
