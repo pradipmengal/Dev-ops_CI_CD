@@ -15,7 +15,7 @@
 
     - name: Pull Docker image from Docker Hub
       docker_image:
-        name: nagraj0477/my_ci_pipeline
+        name: pradipmengal/devops
         tag: latest
         source: pull
         force_source: yes
@@ -29,7 +29,7 @@
     - name: Run Docker container with the latest image
       docker_container:
         name: my_app_container
-        image: nagraj0477/my_ci_pipeline:latest
+        image: pradipmengal/devops:latest
         state: started
         ports:
           - "80:80"
